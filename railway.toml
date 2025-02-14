@@ -1,0 +1,14 @@
+[service]
+name = "MedGeek"  # Change this to your app's name
+env = "production"
+
+[build]
+builder = "NIXPACKS"  # Automatically detects Python
+buildCommand = "pip install --no-cache-dir -r requirements.txt"  # Install dependencies
+
+[start]
+command = "python main.py"  # Change this if your entry file is different
+
+[env]
+PYTHON_VERSION = "3.10"  # Ensure compatibility with TensorFlow 2.15.1
+PORT = 5000  # Use Railway's assigned port
