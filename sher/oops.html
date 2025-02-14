@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGM Level Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            width: 80%;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <canvas id="cgmChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('cgmChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['0:00', '4:00', '8:00', '12:00', '16:00', '20:00'],
+                datasets: [{
+                    label: 'CGM Level (mg/dL)',
+                    data: [100, 110, 90, 120, 95, 105],
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        suggestedMin: 60,
+                        suggestedMax: 180
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

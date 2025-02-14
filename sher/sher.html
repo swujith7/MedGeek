@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Report Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        #pdfUpload {
+            margin-bottom: 20px;
+        }
+
+        #summary {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            white-space: pre-wrap; /* Display line breaks */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Blood Report Analyzer</h1>
+        <input type="file" id="pdfUpload" accept=".pdf">
+        <h2>Summary</h2>
+        <div id="summary">No summary yet</div>
+        <canvas id="gaugeChart" width="400" height="200"></canvas>
+    </div>
+    <script>
+        document.getElementById('pdfUpload').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                processPDF(file);
+            }
+        });
+        function processPDF(file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const arrayBuffer = e.target.result;
+                // Now you have the PDF data as an ArrayBuffer, but processing PDFs in the
+                // browser client-side is complex and typically requires a PDF parsing library
+                // like PDF.js (from Mozilla).
+
+                // For demonstration, I'm skipping the PDF processing and using placeholder data
+                displayPlaceholderData();
+            };
+
+            reader.onerror = function(error) {
+                document.getElementById('summary').innerText = 'Error reading PDF: ' + error;
+            };
+
+            reader.readAsArrayBuffer(file);
+        }
+        function displayPlaceholderData() {
+            const data = {
+                "Blood Sugar": "90 mg/dL",
+                "Vitamin D3": "35 ng/mL",
+                "Vitamin B12": "400 pg/mL",
+                "Cholesterol": "180 mg/dL"
+            };
+
+            let summaryText = "Summary:\n";
+            for (const key in data) {
+                summaryText += `${key}: ${data[key]}\n`;
+            }
+
+            document.getElementById('summary').innerText = summaryText;
+
+            // Dummy data to draw the gauge chart using chart.js
+            const gaugeData = {
+                "Blood Sugar": 90,
+                "Vitamin D3": 35,
+                "Vitamin B12": 400,
+                "Cholesterol": 180
+            };
+            drawGaugeChart("gaugeChart", gaugeData);
+        }
+        function drawGaugeChart(elementId, data) {
+            const canvas = document.getElementById(elementId);
+            if (!canvas) {
+                console.error("Canvas element with ID '" + elementId + "' not found.");
+                return;
+            }
+
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height; // Center vertically at the bottom
+
+            // Chart parameters (adjust for good visual)
+            const radius = Math.min(centerX, centerY) - 20; // Adjusted radius to fit
+            const startAngle = Math.PI;
+            const endAngle = 0;
+            const totalRange = Math.abs(endAngle - startAngle);
+
+            // Example data (replace with real data from PDF)
+            let bloodSugar = data["Blood Sugar"];
+            let vitaminD3 = data["Vitamin D3"];
+            let vitaminB12 = data["Vitamin B12"];
+            let cholesterol = data["Cholesterol"];
+            let maxValueBloodSugar = 150; // Adjust as needed based on context
+            let maxValueVitaminD3 = 80; // Adjust as needed based on context
+            let maxValueVitaminB12 = 1000; // Adjust as needed based on context
+            let maxValueCholesterol = 300; // Adjust as needed based on context
+
+            // Calculate angles based on data percentages
+            let bloodSugarAngle = (bloodSugar / maxValueBloodSugar) * totalRange;
+            let vitaminD3Angle = (vitaminD3 / maxValueVitaminD3) * totalRange;
+            let vitaminB12Angle = (vitaminB12 / maxValueVitaminB12) * totalRange;
+            let cholesterolAngle = (cholesterol / maxValueCholesterol) * totalRange;
+
+            // Draw bloodSugar arc
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startAngle, startAngle + bloodSugarAngle);
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+            // Text below the gauge
+            ctx.font = "14px Arial";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.fillText("Blood Sugar", centerX, centerY - radius - 10);
+
+            // Draw vitaminD3 arc
+            ctx.beginPath();
+            ctx.arc(centerX - radius / 2, centerY, radius, startAngle, startAngle + vitaminD3Angle);
+            ctx.strokeStyle = 'green';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+            // Text below the gauge
+            ctx.font = "14px Arial";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.fillText("Vitamin D3", centerX - radius / 2, centerY - radius - 10);
+
+            // Draw vitaminB12 arc
+            ctx.beginPath();
+            ctx.arc(centerX + radius / 2, centerY, radius, startAngle, startAngle + vitaminB12Angle);
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+            // Text below the gauge
+            ctx.font = "14px Arial";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.fillText("Vitamin B12", centerX + radius / 2, centerY - radius - 10);
+
+            // Draw cholesterol arc
+            ctx.beginPath();
+            ctx.arc(centerX + radius, centerY, radius, startAngle, startAngle + cholesterolAngle);
+            ctx.strokeStyle = 'purple';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+            // Text below the gauge
+            ctx.font = "14px Arial";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.fillText("Cholesterol", centerX + radius, centerY - radius - 10);
+        }
+    </script>
+</body>
+
+</html>

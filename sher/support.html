@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Contacts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .emergency-button {
+            background-color: #e74c3c;
+            /* Red color */
+            color: white;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-button {
+            background-color: #3498db;
+            /* Blue color */
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .emergency-button:hover,
+        .contact-button:hover {
+            background-color: #2980b9;
+        }
+
+        a {
+            text-decoration: none;
+            /* Remove underlines from links */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Emergency Contacts</h1>
+        <a href="tel:112">
+            <button class="emergency-button">CALL AMBULANCE</button>
+        </a>
+        <br>
+        <a href="tel:1234567890">
+            <button class="contact-button">CALL MOM</button>
+        </a>
+        <a href="tel:1234567890">
+            <button class="contact-button">CALL DAD</button>
+        </a>
+        <a href="tel:1234567890">
+            <button class="contact-button">CALL SISTER</button>
+        </a>
+        <a href="tel:1234567890">
+            <button class="contact-button">CALL Doctor</button>
+        </a>
+    </div>
+</body>
+
+</html>
